@@ -95,7 +95,10 @@ ASTNode parseLuaCode(std::string code)
 
     simInt ret = simExecuteScriptString(scriptHandleOrType, code.c_str(), stackHandle);
     if(ret == -1)
-        throw std::runtime_error("exec script error");
+    {
+        CStackObject *obj = CStackObject::buildItemFromTopStackPosition(stackHandle);
+        throw std::runtime_error((boost::format("error: %s") % obj->toString()).str());
+    }
     simInt size = simGetStackSize(stackHandle);
     if(size == 0)
         throw std::runtime_error("empty result in stack");
