@@ -24,6 +24,7 @@ vrep_generate_stubs(${CMAKE_BINARY_DIR}/generated XML_FILE ${CMAKE_SOURCE_DIR}/c
 
 set(SOURCES
     plugin.cpp
+    tinyxml2.cpp
     ${VREP_COMMON}/stack/stackObject.cpp
     ${VREP_COMMON}/stack/stackNull.cpp
     ${VREP_COMMON}/stack/stackBool.cpp
