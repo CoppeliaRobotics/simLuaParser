@@ -85,13 +85,13 @@ ASTNode parseLuaCode(std::string code)
     if(stackHandle == -1)
         throw std::runtime_error("failed to create a stack");
 
-    std::string req = "parser=require 'luacheck.parser'@";
+    std::string req = "require 'luacheck.parser'@";
     simInt ret0 = simExecuteScriptString(scriptHandleOrType, req.c_str(), stackHandle);
     if(ret0 == -1)
         throw std::runtime_error("failed to load luacheck.parser");
 
     std::string delim = "========================================================";
-    code = (boost::format("parser.parse[%s[%s]%s]@") % delim % code % delim).str();
+    code = (boost::format("package.loaded['luacheck.parser'].parse[%s[%s]%s]@") % delim % code % delim).str();
 
     simInt ret = simExecuteScriptString(scriptHandleOrType, code.c_str(), stackHandle);
     if(ret == -1)
@@ -102,9 +102,6 @@ ASTNode parseLuaCode(std::string code)
 
     CStackObject *obj = CStackObject::buildItemFromTopStackPosition(stackHandle);
     ASTNode node = extractNode(obj);
-
-    std::string clean = "parser=nil@";
-    simInt ret1 = simExecuteScriptString(scriptHandleOrType, clean.c_str(), stackHandle);
 
     simReleaseStack(stackHandle);
 
