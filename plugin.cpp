@@ -10,6 +10,7 @@
 #include "stack/stackArray.h"
 #include "stack/stackMap.h"
 #include "tinyxml2.h"
+#include "tixml2ex.h"
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
@@ -37,7 +38,9 @@ void extractNode(XMLDocument *doc, XMLElement *parent, CStackObject *obj)
     {
         // single node
         CStackMap *oMap = static_cast<CStackMap*>(obj);
-        XMLElement *e = doc->NewElement(oMap->getString("tag").c_str());
+        std::string tag = oMap->getString("tag");
+        if(tag == "") tag = "group";
+        XMLElement *e = doc->NewElement(tag.c_str());
 
         CStackMap *oLoc = oMap->getMap("location");
         XMLElement *loc = doc->NewElement("location");
@@ -74,7 +77,7 @@ void extractNode(XMLDocument *doc, XMLElement *parent, CStackObject *obj)
     }
 }
 
-void parse(SScriptCallBack *p, const char *cmd, parse_in *in, parse_out *out)
+XMLDocument * parse(std::string code)
 {
     simInt stackHandle = simCreateStack();
     if(stackHandle == -1)
@@ -86,7 +89,7 @@ void parse(SScriptCallBack *p, const char *cmd, parse_in *in, parse_out *out)
         throw std::runtime_error("failed to load luacheck.parser");
 
     std::string delim = "========================================================";
-    std::string code = (boost::format("package.loaded['luacheck.parser'].parse[%s[%s]%s]@") % delim % in->code % delim).str();
+    code = (boost::format("package.loaded['luacheck.parser'].parse[%s[%s]%s]@") % delim % code % delim).str();
 
     simInt ret = simExecuteScriptString(sim_scripttype_sandboxscript, code.c_str(), stackHandle);
     if(ret == -1)
@@ -104,12 +107,75 @@ void parse(SScriptCallBack *p, const char *cmd, parse_in *in, parse_out *out)
     extractNode(doc, root, obj);
     doc->InsertFirstChild(root);
 
+    simReleaseStack(stackHandle);
+
+    return doc;
+}
+
+std::string parseXML(std::string code)
+{
+    XMLDocument *doc = parse(code);
     XMLPrinter printer;
     doc->Print(&printer);
-    out->result = printer.CStr();
+    std::string result = printer.CStr();
+    delete doc;
+    return result;
+}
+
+void parse(SScriptCallBack *p, const char *cmd, parse_in *in, parse_out *out)
+{
+    out->result = parseXML(in->code);
+}
+
+/*!
+ * this implements the same transformation as the xslt-tests/lua-ast.xslt stylesheet
+ */
+XMLDocument * getFunctionDefs(std::string code)
+{
+    XMLDocument *ret = new XMLDocument;
+    XMLElement *root = ret->NewElement("function-defs");
+    ret->InsertEndChild(root);
+
+    XMLDocument *doc = parse(code);
+    for(auto e : selection(*doc, "/ast/group/Set"))
+    {
+        std::vector<XMLElement*> groups;
+        for(const auto c : selection(e, "group"))
+            groups.push_back(c);
+        XMLElement *id = tixml2ex::find_element(groups[0], "Id");
+        std::string signature = id->Attribute("value");
+        std::string args;
+        for(const auto id : selection(groups[1], "Function/group/Id"))
+            args += std::string(args == "" ? "" : ", ") + id->Attribute("value");
+        signature += "(" + args + ")";
+        XMLElement *func = tixml2ex::find_element(groups[1], "Function");
+        XMLElement *loc = find_element(func, "location");
+        XMLElement *eloc = find_element(func, "end-location");
+        if(!func || !loc || !eloc) continue;
+        XMLElement *f = ret->NewElement("function-def");
+        f->InsertEndChild(loc->ShallowClone(ret));
+        f->InsertEndChild(eloc->ShallowClone(ret));
+        f->SetAttribute("name", signature.c_str());
+        root->InsertEndChild(f);
+    }
     delete doc;
 
-    simReleaseStack(stackHandle);
+    return ret;
+}
+
+std::string getFunctionDefsXML(std::string code)
+{
+    XMLDocument *doc = getFunctionDefs(code);
+    XMLPrinter printer;
+    doc->Print(&printer);
+    std::string result = printer.CStr();
+    delete doc;
+    return result;
+}
+
+void getFunctionDefs(SScriptCallBack *p, const char *cmd, getFunctionDefs_in *in, getFunctionDefs_out *out)
+{
+    out->result = getFunctionDefsXML(in->code);
 }
 
 class Plugin : public vrep::Plugin

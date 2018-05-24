@@ -16,4 +16,17 @@
             </param>
         </return>
     </command>
+    <command name="getFunctionDefs">
+        <description>Parse lua code</description>
+        <params>
+            <param name="code" type="string">
+                <description>lua code</description>
+            </param>
+        </params>
+        <return>
+            <param name="result" type="string">
+                <description>dump of syntax tree</description>
+            </param>
+        </return>
+    </command>
 </plugin>

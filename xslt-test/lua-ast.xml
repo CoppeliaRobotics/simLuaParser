@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<ast>
+    <group>
+        <If>
+            <location line="1" column="1" offset="1"/>
+            <Op value="eq">
+                <location line="1" column="4" offset="4"/>
+                <Id value="i">
+                    <location line="1" column="4" offset="4"/>
+                </Id>
+                <Number value="0">
+                    <location line="1" column="7" offset="7"/>
+                </Number>
+            </Op>
+            <group>
+                <location line="1" column="9" offset="9"/>
+                <Set>
+                    <location line="1" column="14" offset="14"/>
+                    <group>
+                        <Id value="i">
+                            <location line="1" column="14" offset="14"/>
+                        </Id>
+                    </group>
+                    <group>
+                        <Number value="1">
+                            <location line="1" column="16" offset="16"/>
+                        </Number>
+                    </group>
+                </Set>
+            </group>
+        </If>
+        <Set>
+            <location line="1" column="22" offset="22"/>
+            <group>
+                <Id value="foo">
+                    <location line="1" column="31" offset="31"/>
+                </Id>
+            </group>
+            <group>
+                <Function>
+                    <location line="1" column="22" offset="22"/>
+                    <end-location line="1" column="49" offset="49"/>
+                    <group>
+                        <Id value="a">
+                            <location line="1" column="35" offset="35"/>
+                        </Id>
+                        <Id value="b">
+                            <location line="1" column="37" offset="37"/>
+                        </Id>
+                    </group>
+                    <group>
+                        <Return>
+                            <location line="1" column="40" offset="40"/>
+                            <Number value="0">
+                                <location line="1" column="47" offset="47"/>
+                            </Number>
+                        </Return>
+                    </group>
+                </Function>
+            </group>
+        </Set>
+        <Call>
+            <location line="1" column="53" offset="53"/>
+            <Id value="f">
+                <location line="1" column="53" offset="53"/>
+            </Id>
+        </Call>
+        <Set>
+            <location line="1" column="57" offset="57"/>
+            <group>
+                <Id value="bar">
+                    <location line="1" column="66" offset="66"/>
+                </Id>
+            </group>
+            <group>
+                <Function>
+                    <location line="1" column="57" offset="57"/>
+                    <end-location line="1" column="72" offset="72"/>
+                    <group/>
+                    <group/>
+                </Function>
+            </group>
+        </Set>
+        <Set>
+            <location line="1" column="76" offset="76"/>
+            <group>
+                <Id value="baz">
+                    <location line="1" column="76" offset="76"/>
+                </Id>
+            </group>
+            <group>
+                <Function>
+                    <location line="1" column="80" offset="80"/>
+                    <end-location line="1" column="92" offset="92"/>
+                    <group>
+                        <Id value="z">
+                            <location line="1" column="89" offset="89"/>
+                        </Id>
+                    </group>
+                    <group/>
+                </Function>
+            </group>
+        </Set>
+    </group>
+</ast>
