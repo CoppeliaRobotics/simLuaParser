@@ -25,7 +25,7 @@ void extractNode(XMLDocument *doc, XMLElement *parent, CStackObject *obj)
     if(obj->getObjectType() == STACK_ARRAY)
     {
         // sequence of nodes
-        CStackArray *arr = static_cast<CStackArray*>(obj);
+        CStackArray *arr = obj->asArray();
         const std::vector<CStackObject*> *objs = arr->getObjects();
         XMLElement *e = doc->NewElement("group");
         for(CStackObject *obj : *objs)
@@ -37,7 +37,7 @@ void extractNode(XMLDocument *doc, XMLElement *parent, CStackObject *obj)
     else if(obj->getObjectType() == STACK_MAP)
     {
         // single node
-        CStackMap *oMap = static_cast<CStackMap*>(obj);
+        CStackMap *oMap = obj->asMap();
         std::string tag = oMap->getString("tag");
         if(tag == "") tag = "group";
         XMLElement *e = doc->NewElement(tag.c_str());
@@ -68,12 +68,12 @@ void extractNode(XMLDocument *doc, XMLElement *parent, CStackObject *obj)
     else if(obj->getObjectType() == STACK_STRING)
     {
         // literal
-        CStackString *str = static_cast<CStackString*>(obj);
+        CStackString *str = obj->asString();
         parent->SetAttribute("value", str->getValue().c_str());
     }
     else
     {
-        throw std::runtime_error((boost::format("bad object type: %d (%s)") % obj->getObjectType() % static_cast<CStackString*>(obj)->getValue()).str());
+        throw std::runtime_error((boost::format("bad object type: %d (%s)") % obj->getObjectType() % obj->toString()).str());
     }
 }
 
