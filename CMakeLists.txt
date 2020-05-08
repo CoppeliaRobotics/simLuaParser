@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(v_repExtLuaParser)
+project(simExtLuaParser)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_MACOSX_RPATH 1)
@@ -48,6 +48,6 @@ set(LIBRARIES
     ${COPPELIASIM_LIBRARIES}
 )
 
-add_library(v_repExtLuaParser SHARED ${SOURCES})
-target_link_libraries(v_repExtLuaParser ${LIBRARIES})
+add_library(simExtLuaParser SHARED ${SOURCES})
+target_link_libraries(simExtLuaParser ${LIBRARIES})
 
