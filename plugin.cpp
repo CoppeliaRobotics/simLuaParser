@@ -1,4 +1,5 @@
 #include "simPlusPlus/Plugin.h"
+#include "config.h"
 #include "plugin.h"
 #include "stubs.h"
 #include "simLib.h"
