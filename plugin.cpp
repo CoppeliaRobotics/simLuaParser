@@ -16,8 +16,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <boost/format.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/optional.hpp>
 
 using namespace tinyxml2;
 
@@ -86,7 +84,7 @@ public:
         }
         else
         {
-            throw std::runtime_error((boost::format("bad object type: %d (%s)") % obj->getObjectType() % obj->toString()).str());
+            throw sim::exception("bad object type: %d (%s)", obj->getObjectType(), obj->toString());
         }
     }
 
@@ -108,7 +106,7 @@ public:
         if(ret == -1)
         {
             CStackObject *obj = CStackObject::buildItemFromTopStackPosition(stackHandle);
-            throw std::runtime_error((boost::format("error: %s") % obj->toString()).str());
+            throw sim::exception("error: %s", obj->toString());
         }
         simInt size = simGetStackSize(stackHandle);
         if(size == 0)
