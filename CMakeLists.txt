@@ -19,11 +19,9 @@ set(CMAKE_MODULE_PATH
     ${LIBPLUGIN_DIR}/cmake)
 find_package(CoppeliaSim 4.1.0.0 REQUIRED)
 
-include_directories(${COPPELIASIM_INCLUDE_DIR})
 include_directories(${COPPELIASIM_INCLUDE_DIR}/stack)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
-include_directories(${Boost_INCLUDE_DIRS})
 
 coppeliasim_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/simExtLuaParser.lua)
 
@@ -39,16 +37,7 @@ set(SOURCES
     ${COPPELIASIM_COMMON_DIR}/stack/stackString.cpp
     ${COPPELIASIM_COMMON_DIR}/stack/stackArray.cpp
     ${COPPELIASIM_COMMON_DIR}/stack/stackMap.cpp
-    ${COPPELIASIM_EXPORTED_SOURCES}
 )
 
-set(LIBRARIES
-    ${Boost_LIBRARIES}
-    ${COPPELIASIM_LIBRARIES}
-)
-
-add_library(simExtLuaParser SHARED ${SOURCES})
-target_link_libraries(simExtLuaParser ${LIBRARIES})
-
-install(TARGETS simExtLuaParser DESTINATION ${COPPELIASIM_PLUGINS_DIR})
-
+coppeliasim_add_plugin(simExtLuaParser SOURCES ${SOURCES})
+target_link_libraries(simExtLuaParser Boost::boost)
