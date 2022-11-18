@@ -90,25 +90,25 @@ public:
 
     XMLDocument * parse(std::string code)
     {
-        simInt stackHandle = simCreateStack();
+        int stackHandle = simCreateStack();
         if(stackHandle == -1)
             throw std::runtime_error("failed to create a stack");
 
         std::string req = "require 'luacheck.parser'@";
-        simInt ret0 = simExecuteScriptString(sim_scripttype_sandboxscript, req.c_str(), stackHandle);
+        int ret0 = simExecuteScriptString(sim_scripttype_sandboxscript, req.c_str(), stackHandle);
         if(ret0 == -1)
             throw std::runtime_error("failed to load luacheck.parser");
 
         std::string delim = "========================================================";
         code = (boost::format("package.loaded['luacheck.parser'].parse[%s[%s]%s]@") % delim % code % delim).str();
 
-        simInt ret = simExecuteScriptString(sim_scripttype_sandboxscript, code.c_str(), stackHandle);
+        int ret = simExecuteScriptString(sim_scripttype_sandboxscript, code.c_str(), stackHandle);
         if(ret == -1)
         {
             CStackObject *obj = CStackObject::buildItemFromTopStackPosition(stackHandle);
             throw sim::exception("error: %s", obj->toString());
         }
-        simInt size = simGetStackSize(stackHandle);
+        int size = simGetStackSize(stackHandle);
         if(size == 0)
             throw std::runtime_error("empty result in stack");
 
