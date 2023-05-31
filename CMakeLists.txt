@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(simExtLuaParser)
+project(simLuaParser)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_MACOSX_RPATH 1)
@@ -36,5 +36,5 @@ set(SOURCES
     ${COPPELIASIM_COMMON_DIR}/stack/stackMap.cpp
 )
 
-coppeliasim_add_plugin(simExtLuaParser SOURCES ${SOURCES})
-target_link_libraries(simExtLuaParser Boost::boost)
+coppeliasim_add_plugin(simLuaParser SOURCES ${SOURCES})
+target_link_libraries(simLuaParser Boost::boost)
