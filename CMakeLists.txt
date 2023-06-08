@@ -6,17 +6,18 @@ set(CMAKE_MACOSX_RPATH 1)
 
 find_package(Boost REQUIRED)
 
-if(NOT LIBPLUGIN_DIR)
+if(NOT COPPELIASIM_INCLUDE_DIR)
     if(DEFINED ENV{COPPELIASIM_ROOT_DIR})
-        set(LIBPLUGIN_DIR $ENV{COPPELIASIM_ROOT_DIR}/programming/libPlugin)
+        set(COPPELIASIM_INCLUDE_DIR $ENV{COPPELIASIM_ROOT_DIR}/programming/include)
     else()
-        set(LIBPLUGIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libPlugin)
+        set(COPPELIASIM_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../include)
     endif()
 endif()
-list(APPEND CMAKE_MODULE_PATH ${LIBPLUGIN_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
+    ${COPPELIASIM_INCLUDE_DIR}/cmake)
 find_package(CoppeliaSim 4.5.1.7 REQUIRED)
 
-include_directories(${COPPELIASIM_INCLUDE_DIR}/stack)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
 
@@ -27,13 +28,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DI
 set(SOURCES
     plugin.cpp
     tinyxml2.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackObject.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackNull.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackBool.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackNumber.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackString.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackArray.cpp
-    ${COPPELIASIM_COMMON_DIR}/stack/stackMap.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackObject.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackNull.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackBool.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackNumber.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackString.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackArray.cpp
+    ${COPPELIASIM_INCLUDE_DIR}/simStack/stackMap.cpp
 )
 
 coppeliasim_add_plugin(simLuaParser SOURCES ${SOURCES})

@@ -2,14 +2,14 @@
 #include "config.h"
 #include "plugin.h"
 #include "stubs.h"
-#include "simLib.h"
-#include "stack/stackObject.h"
-#include "stack/stackNull.h"
-#include "stack/stackBool.h"
-#include "stack/stackNumber.h"
-#include "stack/stackString.h"
-#include "stack/stackArray.h"
-#include "stack/stackMap.h"
+#include "simLib/simLib.h"
+#include "simStack/stackObject.h"
+#include "simStack/stackNull.h"
+#include "simStack/stackBool.h"
+#include "simStack/stackNumber.h"
+#include "simStack/stackString.h"
+#include "simStack/stackArray.h"
+#include "simStack/stackMap.h"
 #include "tinyxml2.h"
 #include "tixml2ex.h"
 #include <ostream>
@@ -190,5 +190,5 @@ public:
     }
 };
 
-SIM_PLUGIN(PLUGIN_NAME, PLUGIN_VERSION, Plugin)
+SIM_PLUGIN(Plugin)
 #include "stubsPlusPlus.cpp"
