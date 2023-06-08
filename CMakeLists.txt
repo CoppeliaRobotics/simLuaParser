@@ -14,7 +14,7 @@ if(NOT LIBPLUGIN_DIR)
     endif()
 endif()
 list(APPEND CMAKE_MODULE_PATH ${LIBPLUGIN_DIR}/cmake)
-find_package(CoppeliaSim 4.1.0.0 REQUIRED)
+find_package(CoppeliaSim 4.5.1.7 REQUIRED)
 
 include_directories(${COPPELIASIM_INCLUDE_DIR}/stack)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated)
