@@ -21,13 +21,13 @@ find_package(CoppeliaSim 4.5.1.7 REQUIRED)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
 
-coppeliasim_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/simLuaParser.lua)
+coppeliasim_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/sourceCode/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/lua/simLuaParser.lua)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/sourceCode/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 set(SOURCES
-    plugin.cpp
-    tinyxml2.cpp
+    sourceCode/plugin.cpp
+    external/tinyxml2.cpp
     ${COPPELIASIM_INCLUDE_DIR}/simStack/stackObject.cpp
     ${COPPELIASIM_INCLUDE_DIR}/simStack/stackNull.cpp
     ${COPPELIASIM_INCLUDE_DIR}/simStack/stackBool.cpp
