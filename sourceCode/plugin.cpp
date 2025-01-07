@@ -95,14 +95,14 @@ public:
             throw std::runtime_error("failed to create a stack");
 
         std::string req = "require 'luacheck.parser'@";
-        int ret0 = simExecuteScriptString(sim_scripttype_sandboxscript, req.c_str(), stackHandle);
+        int ret0 = simExecuteScriptString(sim_scripttype_sandbox, req.c_str(), stackHandle);
         if(ret0 == -1)
             throw std::runtime_error("failed to load luacheck.parser");
 
         std::string delim = "========================================================";
         code = (boost::format("package.loaded['luacheck.parser'].parse[%s[%s]%s]@") % delim % code % delim).str();
 
-        int ret = simExecuteScriptString(sim_scripttype_sandboxscript, code.c_str(), stackHandle);
+        int ret = simExecuteScriptString(sim_scripttype_sandbox, code.c_str(), stackHandle);
         if(ret == -1)
         {
             CStackObject *obj = CStackObject::buildItemFromTopStackPosition(stackHandle);
